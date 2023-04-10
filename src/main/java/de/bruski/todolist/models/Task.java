@@ -5,14 +5,15 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tasks")
+@Table(name = "Tasks")
 public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    @Column(name = "title")
     private String title;
+    @Column(name = "content")
     private String content;
 
     public Long getId() {

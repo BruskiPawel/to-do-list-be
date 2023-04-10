@@ -18,6 +18,12 @@ public class TaskService {
 
         return taskRepository.findAll();
     }
-
-
+    public void createNewTask(Task task) {
+        taskRepository.save(task);
+    }
+    public void deleteTask(Long id) {
+        System.out.println("befor deleting");
+        taskRepository.deleteById(id);
+        System.out.println("After deleting");
+    }
 }

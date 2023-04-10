@@ -4,9 +4,10 @@ package de.bruski.todolist.controllers;
 import de.bruski.todolist.models.Task;
 import de.bruski.todolist.repositories.TaskRepository;
 import de.bruski.todolist.services.TaskService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,7 +22,20 @@ public class TaskController {
     }
 
     @GetMapping("/tasks")
-    public Iterable<Task> getAllTasks() {
-        return taskService.getAllTasks();
+    public ResponseEntity<?> getAllTask() throws Exception {
+        Iterable<Task> tasks = taskService.getAllTasks();
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
+    }
+
+    @PostMapping("/add-new-task")
+    public ResponseEntity<?> addNewTask(@RequestBody Task task) {
+        taskService.createNewTask(task);
+        return ResponseEntity.ok("Added");
+    }
+
+    @DeleteMapping("/delete-task/{id}")
+    public ResponseEntity<String> deleteTask(@PathVariable Long id) {
+        System.out.println(id);
+        return new ResponseEntity<>("Deleted", HttpStatus.ACCEPTED);
     }
 }
