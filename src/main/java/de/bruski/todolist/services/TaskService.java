@@ -27,4 +27,8 @@ public class TaskService {
         taskRepository.deleteById(id);
         System.out.println("After deleting");
     }
+
+    public void addSortedTaskList(Iterable<Task> tasks) {
+        taskRepository.saveAll(tasks);
+    }
 }

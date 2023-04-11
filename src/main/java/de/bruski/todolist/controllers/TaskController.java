@@ -33,6 +33,12 @@ public class TaskController {
         return ResponseEntity.ok("Added");
     }
 
+    @PostMapping("/post_sorted_tasks")
+    public ResponseEntity<?> postSortedTasks(@RequestBody Iterable<Task> tasks) {
+        taskService.addSortedTaskList(tasks);
+        return ResponseEntity.ok("Added");
+    }
+
     @DeleteMapping("/delete-task/{id}")
     public ResponseEntity<String> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
