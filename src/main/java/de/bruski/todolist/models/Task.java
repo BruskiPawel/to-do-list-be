@@ -2,19 +2,26 @@ package de.bruski.todolist.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Tasks")
+@Table(name = "my_tasks")
 public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "title")
-    private String title;
+    @Column(name = "date")
+    private LocalDateTime date;
+
     @Column(name = "content")
     private String content;
+
+    public Task() {
+    }
 
     public Long getId() {
         return id;
@@ -24,12 +31,12 @@ public class Task {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
     public String getContent() {
@@ -47,13 +54,13 @@ public class Task {
 
         Task task = (Task) o;
 
-        if (!Objects.equals(title, task.title)) return false;
+        if (!Objects.equals(date, task.date)) return false;
         return Objects.equals(content, task.content);
     }
 
     @Override
     public int hashCode() {
-        int result = title != null ? title.hashCode() : 0;
+        int result = date != null ? date.hashCode() : 0;
         result = 31 * result + (content != null ? content.hashCode() : 0);
         return result;
     }
@@ -62,7 +69,7 @@ public class Task {
     public String toString() {
         return "Task{" +
                 "id=" + id +
-                ", title='" + title + '\'' +
+                ", date=" + date +
                 ", content='" + content + '\'' +
                 '}';
     }

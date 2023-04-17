@@ -5,8 +5,12 @@ import de.bruski.todolist.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class TaskService {
@@ -14,7 +18,6 @@ public class TaskService {
     private TaskRepository taskRepository;
 
     public Iterable<Task> getAllTasks() {
-        System.out.println("here is service logic done on the server side");
         return taskRepository.findAll();
     }
 
@@ -23,9 +26,7 @@ public class TaskService {
     }
 
     public void deleteTask(Long id) {
-        System.out.println("befor deleting");
         taskRepository.deleteById(id);
-        System.out.println("After deleting");
     }
 
     public void addSortedTaskList(Iterable<Task> tasks) {

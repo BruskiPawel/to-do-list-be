@@ -34,7 +34,7 @@ public class TaskController {
     }
 
     @PostMapping("/post_sorted_tasks")
-    public ResponseEntity<?> postSortedTasks(@RequestBody Iterable<Task> tasks) {
+    public ResponseEntity<?> postSortedTasks(@RequestBody List<Task> tasks) {
         taskService.addSortedTaskList(tasks);
         return ResponseEntity.ok("Added");
     }
