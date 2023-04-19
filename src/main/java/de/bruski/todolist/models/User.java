@@ -13,18 +13,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(name = "user_name")
-    private String userName;
+    private String username;
     @Column(name = "email")
     private String eMail;
     @Column(name = "password")
     private String password;
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
     public String geteMail() {
@@ -50,14 +50,14 @@ public class User {
 
         User user = (User) o;
 
-        if (!Objects.equals(userName, user.userName)) return false;
+        if (!Objects.equals(username, user.username)) return false;
         if (!Objects.equals(eMail, user.eMail)) return false;
         return Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        int result = userName != null ? userName.hashCode() : 0;
+        int result = username != null ? username.hashCode() : 0;
         result = 31 * result + (eMail != null ? eMail.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         return result;
@@ -67,7 +67,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", userName='" + userName + '\'' +
+                ", userName='" + username + '\'' +
                 ", eMail='" + eMail + '\'' +
                 ", password='" + password + '\'' +
                 '}';

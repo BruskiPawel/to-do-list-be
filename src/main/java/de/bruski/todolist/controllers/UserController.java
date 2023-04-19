@@ -4,10 +4,9 @@ import de.bruski.todolist.models.Task;
 import de.bruski.todolist.models.User;
 import de.bruski.todolist.services.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.NoSuchAlgorithmException;
 
 
 @CrossOrigin
@@ -25,5 +24,15 @@ public class UserController {
         userService.addNewUser(user);
         return ResponseEntity.ok("Added");
     }
+
+    @PostMapping("/login_user")
+    public ResponseEntity<?> loginUser(@RequestBody User user) throws NoSuchAlgorithmException {
+        ResponseEntity<?> responseEntity = userService.loginUser(user);
+        System.out.println(responseEntity);
+
+        return ResponseEntity.ok(true);
+    }
+
+
 
 }
