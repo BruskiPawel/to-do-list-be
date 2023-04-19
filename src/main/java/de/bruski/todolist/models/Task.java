@@ -20,7 +20,18 @@ public class Task {
     @Column(name = "content")
     private String content;
 
+    @ManyToOne
+    private User user;
+
     public Task() {
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Long getId() {

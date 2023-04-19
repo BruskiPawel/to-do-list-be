@@ -3,6 +3,8 @@ package de.bruski.todolist.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -18,6 +20,17 @@ public class User {
     private String eMail;
     @Column(name = "password")
     private String password;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = ("user"), cascade = CascadeType.ALL)
+    private List<Task> taskList = new ArrayList<>();
+
+    public List<Task> getTaskList() {
+        return taskList;
+    }
+
+    public void setTaskList(List<Task> taskList) {
+        this.taskList = taskList;
+    }
 
     public String getUsername() {
         return username;

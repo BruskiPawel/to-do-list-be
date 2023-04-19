@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -18,6 +19,7 @@ public class TaskService {
     private TaskRepository taskRepository;
 
     public Iterable<Task> getAllTasks() {
+
         return taskRepository.findAll();
     }
 
@@ -30,6 +32,10 @@ public class TaskService {
     }
 
     public void addSortedTaskList(Iterable<Task> tasks) {
-        taskRepository.saveAll(tasks);
+        List<Task> sortedTasks = StreamSupport.stream(tasks.spliterator(), false)
+                .sorted(Comparator.comparing(Task::getContent))
+                .collect(Collectors.toList());
+        System.out.println(sortedTasks.toString());
+        taskRepository.saveAll(sortedTasks);
     }
 }

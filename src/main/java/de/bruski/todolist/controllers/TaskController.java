@@ -24,6 +24,7 @@ public class TaskController {
     @GetMapping("/tasks")
     public ResponseEntity<?> getAllTask() throws Exception {
         Iterable<Task> tasks = taskService.getAllTasks();
+        tasks.forEach(task -> System.out.println(task.getUser()));
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
