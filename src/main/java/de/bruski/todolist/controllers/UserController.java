@@ -27,10 +27,7 @@ public class UserController {
 
     @PostMapping("/login_user")
     public ResponseEntity<?> loginUser(@RequestBody User user) throws NoSuchAlgorithmException {
-        System.out.println("Lista taskow usera: " + user.getTaskList().toString());
         ResponseEntity<?> responseEntity = userService.loginUser(user);
-        System.out.println(responseEntity);
-
         return ResponseEntity.ok(true);
     }
 

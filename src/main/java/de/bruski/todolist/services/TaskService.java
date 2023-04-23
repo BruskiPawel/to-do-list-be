@@ -5,13 +5,8 @@ import de.bruski.todolist.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class TaskService {
@@ -32,10 +27,7 @@ public class TaskService {
     }
 
     public void addSortedTaskList(Iterable<Task> tasks) {
-        List<Task> sortedTasks = StreamSupport.stream(tasks.spliterator(), false)
-                .sorted(Comparator.comparing(Task::getContent))
-                .collect(Collectors.toList());
-        System.out.println(sortedTasks.toString());
-        taskRepository.saveAll(sortedTasks);
+        taskRepository.deleteAll();
+        taskRepository.saveAll(tasks);
     }
 }
