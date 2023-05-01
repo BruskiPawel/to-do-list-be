@@ -3,7 +3,6 @@ package de.bruski.todolist.services;
 import de.bruski.todolist.models.User;
 import de.bruski.todolist.repositories.UserRepository;
 import de.bruski.todolist.webconfig.Encryptor;
-import jakarta.persistence.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
