@@ -1,6 +1,7 @@
 package de.bruski.todolist.models;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -18,19 +19,19 @@ public class Task {
     @Column(name = "content")
     private String content;
 
-    @ManyToOne
-    private User user;
+//    @ManyToOne
+//    private User user;
 
     public Task() {
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 
     public Long getId() {
         return id;

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController()
 @CrossOrigin
@@ -24,21 +25,27 @@ public class TaskController {
     @GetMapping("/tasks")
     public ResponseEntity<?> getAllTask() throws Exception {
         Iterable<Task> tasks = taskService.getAllTasks();
-        tasks.forEach(task -> System.out.println(task.getUser()));
+//        tasks.forEach(task -> System.out.println(task.getUser()));
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
     @PostMapping("/add-new-task")
     public ResponseEntity<?> addNewTask(@RequestBody Task task) {
         taskService.createNewTask(task);
-        return ResponseEntity.ok("Added");
+        return new ResponseEntity<>("Created" ,HttpStatus.CREATED);
     }
 
-    @PostMapping("/post_sorted_tasks")
-    public ResponseEntity<?> postSortedTasks(@RequestBody List<Task> tasks) {
-        taskService.addSortedTaskList(tasks);
-        return ResponseEntity.ok("Added");
+    @GetMapping("/tasks/{task}")
+    public ResponseEntity<?> getTaskById(@PathVariable Long task) {
+        Optional<Task> taskById = taskService.getTaskById(task);
+        return new ResponseEntity<>(taskById, HttpStatus.OK);
     }
+    @PostMapping("/post_sorted_tasks")
+//    public ResponseEntity<?> postSortedTasks(@RequestBody List<Task> tasks) {
+//        taskService.addSortedTaskList(tasks);
+//        return ResponseEntity.ok("Added");
+//    }
+//
 
     @DeleteMapping("/delete-task/{id}")
     public ResponseEntity<String> deleteTask(@PathVariable Long id) {

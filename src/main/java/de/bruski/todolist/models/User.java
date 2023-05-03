@@ -21,16 +21,16 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = ("user"), cascade = CascadeType.ALL)
-    private List<Task> taskList = new ArrayList<>();
-
-    public List<Task> getTaskList() {
-        return taskList;
-    }
-
-    public void setTaskList(List<Task> taskList) {
-        this.taskList = taskList;
-    }
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = ("user"), cascade = CascadeType.ALL)
+//    private List<Task> taskList = new ArrayList<>();
+//
+//    public List<Task> getTaskList() {
+//        return taskList;
+//    }
+//
+//    public void setTaskList(List<Task> taskList) {
+//        this.taskList = taskList;
+//    }
 
     public String getUsername() {
         return username;
