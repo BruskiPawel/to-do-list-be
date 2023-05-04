@@ -12,17 +12,21 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,19 +35,20 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@WebMvcTest
 class UserControllerTest {
 
-    @Autowired
+    @MockBean
     UserService userService;
-
-    @Autowired
-    UserRepository userRepository;
 
     @Autowired
     ObjectMapper objectMapper;
 
+    private List<User> users = new ArrayList<>();
+
+    @Autowired
     MockMvc mockMvc;
+
     @BeforeEach
     void beforeEach() {
         User user = new User();
@@ -65,16 +70,10 @@ class UserControllerTest {
     @Test
     void addNewUserTest() throws Exception {
 
-        User user = new User();
-        user.setUsername("Anna");
-        user.setPassword("ania123");
-
-        userRepository.deleteAll();
-        userRepository.save(user);
-//        given(userRepository.save(user)).willReturn(userRepository.findAll().get(0));
+    given(userService.addNewUser(User.builder().eMail("pawel@gmail.com").build())).willReturn((userService.getAllUsers().get(0)));
 
         mockMvc.perform(post("/new_user")
-                .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 

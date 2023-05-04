@@ -4,10 +4,12 @@ import de.bruski.todolist.models.User;
 import de.bruski.todolist.repositories.UserRepository;
 import de.bruski.todolist.webconfig.Encryptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 
 @Service
@@ -43,5 +45,8 @@ public class UserService {
         return ResponseEntity.ok(true);
     }
 
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
 }
