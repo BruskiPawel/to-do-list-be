@@ -2,12 +2,9 @@ package de.bruski.todolist.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Objects;
 
 @Entity
 @Table(name = "my_tasks")

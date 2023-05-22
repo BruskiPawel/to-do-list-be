@@ -23,7 +23,7 @@ public class TaskController {
 
     @GetMapping("/tasks")
     public ResponseEntity<?> getAllTask() throws Exception {
-        Iterable<Task> tasks = taskService.getAllTasks();
+        List<Task> tasks = taskService.getAllTasks();
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 

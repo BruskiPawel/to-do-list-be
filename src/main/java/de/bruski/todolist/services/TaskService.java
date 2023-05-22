@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
@@ -13,7 +14,7 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public Iterable<Task> getAllTasks() {
+    public List<Task> getAllTasks() {
 
         return taskRepository.findAll();
     }
@@ -29,5 +30,9 @@ public class TaskService {
     public void addSortedTaskList(Iterable<Task> tasks) {
         taskRepository.deleteAll();
         taskRepository.saveAll(tasks);
+    }
+
+    public Optional<Task> getTaskById(Long id) {
+        return taskRepository.findById(id);
     }
 }
