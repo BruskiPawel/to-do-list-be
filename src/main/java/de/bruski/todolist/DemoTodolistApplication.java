@@ -1,6 +1,7 @@
 package de.bruski.todolist;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.JpaContext;
 
 @SpringBootApplication
 public class DemoTodolistApplication {
