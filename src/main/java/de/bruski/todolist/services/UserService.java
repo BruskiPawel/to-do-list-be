@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 
 
 @Service
@@ -30,12 +31,12 @@ public class UserService {
     }
 
     public ResponseEntity<?> loginUser(User user) throws NoSuchAlgorithmException {
-            User userDB = userRepository.findByUsername(user.getUsername());
+            Optional<User> userDB = userRepository.findByUsername(user.getUsername());
         if(userDB == null) {
             System.out.println("Invalid username");
             throw new IllegalArgumentException("Invalid username");
         }
-        if(userDB.getPassword().equals(encryptor.encryptString(user.getPassword()))){
+        if(userDB.get().getPassword().equals(encryptor.encryptString(user.getPassword()))){
             System.out.println("Logedin !");
         } else {
             throw new IllegalArgumentException("Invalid Password!");

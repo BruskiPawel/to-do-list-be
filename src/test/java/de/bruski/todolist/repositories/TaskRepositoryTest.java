@@ -52,7 +52,6 @@ class TaskRepositoryTest {
 
         String[] splitedLine = line.split(";");
         LocalDate date = LocalDate.parse(splitedLine[0], dateFormatter);
-        LocalTime time = LocalTime.parse(splitedLine[1], timeFormatter);
         return Task.builder().date(date).content(splitedLine[2]).build();
     }
 
