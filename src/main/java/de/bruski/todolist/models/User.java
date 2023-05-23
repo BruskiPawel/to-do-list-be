@@ -4,8 +4,6 @@ package de.bruski.todolist.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Objects;
-
 @Entity
 @Table(name = "users")
 @NoArgsConstructor

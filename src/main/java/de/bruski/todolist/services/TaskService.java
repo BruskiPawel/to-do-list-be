@@ -7,10 +7,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
-public class TaskService {
+public class TaskService implements TaskServiceI{
     @Autowired
     private TaskRepository taskRepository;
 
@@ -19,11 +20,11 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
-    public void createNewTask(Task task) {
-        taskRepository.save(task);
+    public Task createNewTask(Task task) {
+        return taskRepository.save(task);
     }
 
-    public void deleteTask(Long id) {
+    public void deleteTask(UUID id) {
         taskRepository.deleteById(id);
     }
 
@@ -32,7 +33,7 @@ public class TaskService {
         taskRepository.saveAll(tasks);
     }
 
-    public Optional<Task> getTaskById(Long id) {
+    public Optional<Task> getTaskById(UUID id) {
         return taskRepository.findById(id);
     }
 }
