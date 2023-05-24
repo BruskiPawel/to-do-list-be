@@ -1,6 +1,6 @@
 package de.bruski.todolist.services;
 
-import de.bruski.todolist.models.User;
+import de.bruski.todolist.models.UserDTO;
 import de.bruski.todolist.repositories.UserRepository;
 import de.bruski.todolist.webconfig.Encryptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +15,11 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private Encryptor encryptor;
 
-    public void addNewUser(User user) {
+    public UserDTO addNewUser(UserDTO user) {
         String encryptedPassword;
         try {
             encryptedPassword = encryptor.encryptString(user.getPassword());
@@ -26,12 +27,13 @@ public class UserService {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
-        userRepository.save(user);
+
         System.out.println("saved");
+        return userRepository.save(user);
     }
 
-    public ResponseEntity<?> loginUser(User user) throws NoSuchAlgorithmException {
-            Optional<User> userDB = userRepository.findByUsername(user.getUsername());
+    public ResponseEntity<?> loginUser(UserDTO user) throws NoSuchAlgorithmException {
+            Optional<UserDTO> userDB = userRepository.findByUsername(user.getUsername());
         if(userDB == null) {
             System.out.println("Invalid username");
             throw new IllegalArgumentException("Invalid username");

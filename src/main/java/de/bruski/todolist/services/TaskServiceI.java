@@ -1,20 +1,20 @@
 package de.bruski.todolist.services;
 
-import de.bruski.todolist.models.Task;
+import de.bruski.todolist.models.TaskDTO;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface TaskServiceI {
-    List<Task> getAllTasks();
+    List<TaskDTO> getAllTasks();
 
-    Task createNewTask(Task task);
+    TaskDTO createNewTask(TaskDTO task);
 
     void deleteTask(UUID id);
 
-    void addSortedTaskList(Iterable<Task> tasks);
+    void addSortedTaskList(Iterable<TaskDTO> tasks);
 
-    Optional<Task> getTaskById(UUID id);
+    Optional<TaskDTO> getTaskById(UUID id);
 
 }

@@ -1,9 +1,9 @@
 package de.bruski.todolist.controllers;
 
-import de.bruski.todolist.models.Task;
-import de.bruski.todolist.models.User;
+import de.bruski.todolist.models.UserDTO;
 import de.bruski.todolist.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,18 +15,18 @@ import java.security.NoSuchAlgorithmException;
 @RequiredArgsConstructor
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @PostMapping("/new_user")
-    public ResponseEntity<?> addNewUser(@RequestBody User user){
-        userService.addNewUser(user);
-        return ResponseEntity.ok("Added");
+    public ResponseEntity<?> addNewUser(@RequestBody UserDTO user){
+        UserDTO savedUser = userService.addNewUser(user);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
     @PostMapping("/login_user")
-    public ResponseEntity<?> loginUser(@RequestBody User user) throws NoSuchAlgorithmException {
+    public ResponseEntity<?> loginUser(@RequestBody UserDTO user) throws NoSuchAlgorithmException {
         ResponseEntity<?> responseEntity = userService.loginUser(user);
-        return ResponseEntity.ok(true);
+        return ResponseEntity.ok("User logged in successfully.");
     }
 
 

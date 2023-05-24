@@ -1,9 +1,8 @@
 package de.bruski.todolist.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.bruski.todolist.models.Task;
+import de.bruski.todolist.models.TaskDTO;
 import de.bruski.todolist.services.TaskService;
-import net.bytebuddy.asm.Advice;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -38,9 +37,9 @@ class TaskControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
-    List<Task> expectedTaskList = Arrays.asList(
-            new Task(UUID.randomUUID(), LocalDate.now(), LocalTime.now(), "Task 1"),
-            new Task(UUID.randomUUID(), LocalDate.now(), LocalTime.now(), "Task 2")
+    List<TaskDTO> expectedTaskList = Arrays.asList(
+            new TaskDTO(UUID.randomUUID(), LocalDate.now(), LocalTime.now(), "Task 1"),
+            new TaskDTO(UUID.randomUUID(), LocalDate.now(), LocalTime.now(), "Task 2")
     );
 
     @Test
@@ -56,7 +55,7 @@ class TaskControllerTest {
 
     @Test
     void shouldReturnTaskById() throws Exception {
-        Task expectedTask = expectedTaskList.get(1);
+        TaskDTO expectedTask = expectedTaskList.get(1);
 
         given(taskService.getTaskById(any(UUID.class))).willReturn(Optional.of(expectedTask));
 
@@ -69,7 +68,7 @@ class TaskControllerTest {
 
     @Test
     void shouldDeleteTaskFromDataBase() throws Exception {
-        Task taskToDelete = expectedTaskList.get(1);
+        TaskDTO taskToDelete = expectedTaskList.get(1);
 
         mockMvc.perform(delete("/delete-task/" + taskToDelete.getId()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
@@ -77,20 +76,21 @@ class TaskControllerTest {
 
         ArgumentCaptor<UUID> uuidArgumentCaptor = ArgumentCaptor.forClass(UUID.class);
 
-        verify(taskService).getTaskById(uuidArgumentCaptor.capture());
+        verify(taskService).deleteTask(uuidArgumentCaptor.capture());
 
         Assertions.assertThat(taskToDelete.getId()).isEqualTo(uuidArgumentCaptor.getValue());
     }
 
     @Test
     void shouldAddNewTaskToDataBase() throws Exception {
-        Task newTask = new Task(UUID.randomUUID(), LocalDate.now(), LocalTime.now(), "New Task");
+        TaskDTO newTask = new TaskDTO(UUID.randomUUID(), LocalDate.now(), LocalTime.now(), "New Task");
 
-        given(taskService.createNewTask(any(Task.class))).willReturn(newTask);
+        given(taskService.createNewTask(any(TaskDTO.class))).willReturn(newTask);
 
         mockMvc.perform(post("/add-new-task")
                         .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newTask)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(newTask)))
                 .andExpect(status().isCreated());
     }
 }

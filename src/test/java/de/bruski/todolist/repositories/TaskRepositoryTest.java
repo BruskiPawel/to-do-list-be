@@ -1,6 +1,6 @@
 package de.bruski.todolist.repositories;
 
-import de.bruski.todolist.models.Task;
+import de.bruski.todolist.models.TaskDTO;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +24,7 @@ class TaskRepositoryTest {
 
     @BeforeEach
     void beforeEach() {
-        List<Task> expectedListOfTask = getListOfTaskToTest();
+        List<TaskDTO> expectedListOfTask = getListOfTaskToTest();
         taskRepository.saveAll(expectedListOfTask);
     }
 
@@ -33,8 +33,8 @@ class TaskRepositoryTest {
         taskRepository.deleteAll();
     }
 
-    List<Task> getListOfTaskToTest() {
-        List<Task> listOfTestTasks = List.of();
+    List<TaskDTO> getListOfTaskToTest() {
+        List<TaskDTO> listOfTestTasks = List.of();
         File file = new File("src/test/resources/test_task_data");
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file));) {
             listOfTestTasks = bufferedReader.lines().map(this::mapToTask).collect(Collectors.toList());
@@ -46,20 +46,20 @@ class TaskRepositoryTest {
         return listOfTestTasks;
     }
 
-    Task mapToTask(String line) {
+    TaskDTO mapToTask(String line) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
         String[] splitedLine = line.split(";");
         LocalDate date = LocalDate.parse(splitedLine[0], dateFormatter);
-        return Task.builder().date(date).content(splitedLine[2]).build();
+        return TaskDTO.builder().date(date).content(splitedLine[2]).build();
     }
 
     @Test
     void shouldReturnAllTasksFromDataBase() {
         // given
         // when
-        List<Task> result = taskRepository.findAll();
+        List<TaskDTO> result = taskRepository.findAll();
         // then
         Assertions.assertThat(taskRepository.count()).isEqualTo(32);
         Assertions.assertThat(result.get(4).getId()).isNotNull();
@@ -68,12 +68,12 @@ class TaskRepositoryTest {
     @Test
     void shouldDeleteTaskFromDataBase() {
         // given
-        List<Task> taskFromDataBase = taskRepository.findAll();
-        Task taskToDelete = taskFromDataBase.get(5);
+        List<TaskDTO> taskFromDataBase = taskRepository.findAll();
+        TaskDTO taskToDelete = taskFromDataBase.get(5);
         // given and when
         taskRepository.deleteById(taskToDelete.getId());
         long result = taskRepository.count();
-        Optional<Task> DeletedTask = taskRepository.findById(taskToDelete.getId());
+        Optional<TaskDTO> DeletedTask = taskRepository.findById(taskToDelete.getId());
         // then
         Assertions.assertThat(result).isEqualTo(31);
         Assertions.assertThat(DeletedTask).isEmpty();
@@ -84,7 +84,7 @@ class TaskRepositoryTest {
         // given
         String testTaskContent = "Prepare for upcoming presentation";
         // when
-        Task result = taskRepository.findByContent(testTaskContent);
+        TaskDTO result = taskRepository.findByContent(testTaskContent);
         // then
         Assertions.assertThat(result.getContent()).isEqualTo(testTaskContent);
     }
@@ -95,7 +95,7 @@ class TaskRepositoryTest {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate dateForTest = LocalDate.parse("2023-01-16", dateFormatter);
         // when
-        List<Task> result = taskRepository.findTasksByDate(dateForTest);
+        List<TaskDTO> result = taskRepository.findTasksByDate(dateForTest);
         // then
         Assertions.assertThat(result.size()).isNotNull().isEqualTo(3);
     }
@@ -103,10 +103,10 @@ class TaskRepositoryTest {
     @Test
     void shouldSaveNewTaskInDataBase() {
         // given
-        Task testTaskToSaveInDataBase = Task.builder().date(LocalDate.now()).time(LocalTime.now()).content("Test Task").build();
+        TaskDTO testTaskToSaveInDataBase = TaskDTO.builder().date(LocalDate.now()).time(LocalTime.now()).content("Test Task").build();
         // when
         taskRepository.save(testTaskToSaveInDataBase);
-        Task testTask = taskRepository.findByContent("Test Task");
+        TaskDTO testTask = taskRepository.findByContent("Test Task");
         // then
         Assertions.assertThat(taskRepository.count()).isEqualTo(33);
         Assertions.assertThat(testTask.getId()).isNotNull();

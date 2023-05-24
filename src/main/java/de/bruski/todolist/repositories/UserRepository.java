@@ -1,19 +1,20 @@
 package de.bruski.todolist.repositories;
 
-import de.bruski.todolist.models.User;
+import de.bruski.todolist.models.UserDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    List<User> findAll();
+public interface UserRepository extends JpaRepository<UserDTO, UUID> {
+    List<UserDTO> findAll();
 
-    Optional<User> findByUsername(String username);
+    Optional<UserDTO> findByUsername(String username);
 
-    Optional<User> findByEmail(String email);
+    Optional<UserDTO> findByEmail(String email);
 
-    Optional<User> findById(Long id);
+    Optional<UserDTO> findById(UUID id);
 }
