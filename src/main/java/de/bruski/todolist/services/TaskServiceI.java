@@ -13,7 +13,7 @@ public interface TaskServiceI {
 
     void deleteTask(UUID id);
 
-    void addSortedTaskList(Iterable<TaskDTO> tasks);
+    //void addSortedTaskList(Iterable<TaskDTO> tasks);
 
     Optional<TaskDTO> getTaskById(UUID id);
 

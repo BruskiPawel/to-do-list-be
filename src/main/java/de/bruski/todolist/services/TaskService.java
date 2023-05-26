@@ -1,7 +1,10 @@
 package de.bruski.todolist.services;
 
+import de.bruski.todolist.entities.Task;
+import de.bruski.todolist.mapper.TaskMapper;
 import de.bruski.todolist.models.TaskDTO;
 import de.bruski.todolist.repositories.TaskRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,29 +13,32 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class TaskService implements TaskServiceI{
+@RequiredArgsConstructor
+public class TaskService implements TaskServiceI {
+
     @Autowired
     private TaskRepository taskRepository;
 
-    public List<TaskDTO> getAllTasks() {
+    private final TaskMapper taskMapper;
 
-        return taskRepository.findAll();
+    public List<TaskDTO> getAllTasks() {
+        return taskMapper.taskListToTaskDtoList(taskRepository.findAll());
     }
 
     public TaskDTO createNewTask(TaskDTO task) {
-        return taskRepository.save(task);
+        return taskMapper.taskToTaskDto(taskRepository.save(taskMapper.taskDtoToTask(task)));
     }
 
     public void deleteTask(UUID id) {
         taskRepository.deleteById(id);
     }
 
-    public void addSortedTaskList(Iterable<TaskDTO> tasks) {
-        taskRepository.deleteAll();
-        taskRepository.saveAll(tasks);
-    }
+//    public void addSortedTaskList(List<TaskDTO> tasks) {
+//        taskRepository.deleteAll();
+//        taskRepository.saveAll(taskMapper.taskDtoToTask(tasks));
+//    }
 
     public Optional<TaskDTO> getTaskById(UUID id) {
-        return taskRepository.findById(id);
+        return Optional.ofNullable(taskMapper.taskToTaskDto(taskRepository.findById(id).orElse(null)));
     }
 }
