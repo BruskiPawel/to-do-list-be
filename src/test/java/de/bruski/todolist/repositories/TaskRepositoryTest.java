@@ -1,12 +1,16 @@
 package de.bruski.todolist.repositories;
 
+import de.bruski.todolist.bootstrap.BootStrapData;
 import de.bruski.todolist.entities.Task;
+import de.bruski.todolist.services.TaskCsvService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Import;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -21,11 +25,14 @@ class TaskRepositoryTest {
 
     @Autowired
     TaskRepository taskRepository;
+    @Autowired
+    BootStrapData bootStrapData;
 
     @BeforeEach
-    void beforeEach() {
-        List<Task> expectedListOfTask = getListOfTaskToTest();
-        taskRepository.saveAll(expectedListOfTask);
+    void beforeEach() throws FileNotFoundException {
+//        List<Task> expectedListOfTask = getListOfTaskToTest();
+//        taskRepository.saveAll(expectedListOfTask);
+        bootStrapData.loadTaskCSVData();
     }
 
     @AfterEach
@@ -55,6 +62,11 @@ class TaskRepositoryTest {
         return Task.builder().date(date).content(splitedLine[2]).build();
     }
 
+    @Test
+    void getalltest() {
+        List<Task> all = taskRepository.findAll();
+        System.out.println(all.size());
+    }
     @Test
     void shouldReturnAllTasksFromDataBase() {
         // given
