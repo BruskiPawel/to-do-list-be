@@ -21,7 +21,7 @@ class TaskControllerTestIT {
     @Test
     void findAllTasks() {
         List<Task> expectedTasks = taskRepository.findAll();
-        Assertions.assertThat(expectedTasks.size()).isEqualTo(15);
+        Assertions.assertThat(expectedTasks.size()).isEqualTo(16);
     }
 
 

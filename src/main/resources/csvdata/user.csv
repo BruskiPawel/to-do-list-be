@@ -1,4 +1,4 @@
-id,username,email,password
+,username,email,password
 5f7dcf15-1d52-4d9b-877a-01b9e8d6b234,user1,user1@example.com,pass123
 db8d3e79-d579-4c5a-a92b-549e17e8c6c2,user2,user2@example.com,pass456
 f9a3353f-1f38-4ed7-98cc-870e328af432,user3,user3@example.com,pass789
