@@ -1,6 +1,7 @@
 package de.bruski.todolist.services;
 
 import de.bruski.todolist.entities.Task;
+import de.bruski.todolist.entities.User;
 import de.bruski.todolist.mapper.TaskMapper;
 import de.bruski.todolist.models.TaskDTO;
 import de.bruski.todolist.repositories.TaskRepository;
@@ -21,7 +22,7 @@ public class TaskService implements TaskServiceI {
 
     private final TaskMapper taskMapper;
 
-    public List<TaskDTO> getAllTasks() {
+    public List<TaskDTO> getAllTasks(User user, String date) {
         return taskMapper.taskListToTaskDtoList(taskRepository.findAll());
     }
 

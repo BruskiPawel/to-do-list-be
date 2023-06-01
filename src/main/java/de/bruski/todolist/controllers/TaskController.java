@@ -1,6 +1,7 @@
 package de.bruski.todolist.controllers;
 
 
+import de.bruski.todolist.entities.User;
 import de.bruski.todolist.models.TaskDTO;
 import de.bruski.todolist.services.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,9 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping("/tasks")
-    public ResponseEntity<?> getAllTask() throws Exception {
-        List<TaskDTO> tasks = taskService.getAllTasks();
+    public ResponseEntity<?> getAllTask(@RequestParam(required = false) User user,
+                                        @RequestParam(required = false) String date) throws Exception {
+        List<TaskDTO> tasks = taskService.getAllTasks(user, date);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
     @GetMapping("/task-by-id/{id}")

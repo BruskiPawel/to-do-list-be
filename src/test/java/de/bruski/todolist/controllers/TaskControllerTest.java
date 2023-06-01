@@ -45,7 +45,7 @@ class TaskControllerTest {
     @Test
     void shouldReturnAllTasks() throws Exception {
 
-        given(taskService.getAllTasks()).willReturn(expectedTaskList);
+        given(taskService.getAllTasks(any(), any())).willReturn(expectedTaskList);
 
         mockMvc.perform(get("/tasks")
                         .accept(MediaType.APPLICATION_JSON))
