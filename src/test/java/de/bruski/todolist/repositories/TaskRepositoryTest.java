@@ -2,12 +2,15 @@ package de.bruski.todolist.repositories;
 
 import de.bruski.todolist.bootstrap.BootStrapData;
 import de.bruski.todolist.entities.Task;
+import de.bruski.todolist.entities.User;
 import de.bruski.todolist.services.TaskCsvService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.control.MappingControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,6 +25,11 @@ class TaskRepositoryTest {
     @Autowired
     TaskRepository taskRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    BootStrapData bootStrapData;
 //    @BeforeEach
 //    void beforeEach() throws FileNotFoundException {
 ////        List<Task> expectedListOfTask = getListOfTaskToTest();
@@ -56,11 +64,22 @@ class TaskRepositoryTest {
 //        return Task.builder().date(date).content(splitedLine[2]).build();
 //    }
 
+
+    @Test
+    void checkOneToManyMap() throws Exception {
+        // Given
+        bootStrapData.run(); // Load test data from CSV files
+
+        // When
+        System.out.println(taskRepository.count());
+        // Then
+    }
     @Test
     void shouldReturnAllTasksFromDataBase() {
         // given
+User user = userRepository.findAll().get(0);
         // when
-        List<Task> result = taskRepository.findAll();
+        List<Task> result = taskRepository.findAllByUser(user);
         // then
         Assertions.assertThat(taskRepository.count()).isEqualTo(16);
         Assertions.assertThat(result.get(4).getId()).isNotNull();
@@ -112,6 +131,12 @@ class TaskRepositoryTest {
         Assertions.assertThat(taskRepository.count()).isEqualTo(17);
         Assertions.assertThat(testTask.getId()).isNotNull();
         Assertions.assertThat(testTask.getContent()).isEqualTo("Test Task");
+    }
+
+    @Test
+    void checkOneToManyMapping() {
+        Task task = taskRepository.findAll().get(4);
+        System.out.println(taskRepository.count());
     }
 
 

@@ -113,5 +113,10 @@ class UserRepositoryTest {
         Assertions.assertThat(result).isEmpty();
     }
 
+    @Test
+    void checkOneToManyMapping() {
+        User user = userRepository.findAll().get(4);
+        System.out.println(userRepository.count());
+    }
 
 }

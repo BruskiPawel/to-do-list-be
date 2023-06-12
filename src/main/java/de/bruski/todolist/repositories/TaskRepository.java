@@ -18,4 +18,6 @@ public interface TaskRepository extends JpaRepository<Task, UUID> {
 
     List <Task> findTasksByDate(LocalDate localDate);
 
+    List<Task> findAllByUser(User user);
+
 }

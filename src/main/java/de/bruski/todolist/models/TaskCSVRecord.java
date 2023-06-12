@@ -20,4 +20,6 @@ public class TaskCSVRecord {
     private String time;
     @CsvBindByName
     private String content;
+    @CsvBindByName
+    private String userId;
 }
