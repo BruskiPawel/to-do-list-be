@@ -1,7 +1,9 @@
 package de.bruski.todolist.controllers;
 
 import de.bruski.todolist.entities.Task;
+import de.bruski.todolist.entities.User;
 import de.bruski.todolist.repositories.TaskRepository;
+import de.bruski.todolist.repositories.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +20,16 @@ class TaskControllerTestIT {
     @Autowired
     TaskRepository taskRepository;
 
-    @Test
-    void findAllTasks() {
-        List<Task> expectedTasks = taskRepository.findAll();
-        Assertions.assertThat(expectedTasks.size()).isEqualTo(9);
+    @Autowired
+    UserRepository userRepository;
 
-        System.out.println(expectedTasks.get(5).getUser());
+    @Test
+    void findAllTasksByUser() {
+        User expectedUser = userRepository.findAll().get(0);
+        List<Task> expectedTasks = taskRepository.findAllByUser(expectedUser);
+
+        Assertions.assertThat(expectedTasks.size()).isEqualTo(9);
+        Assertions.assertThat(expectedUser).isNotNull();
     }
 
 

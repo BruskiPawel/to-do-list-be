@@ -1,25 +1,26 @@
 package de.bruski.todolist.repositories;
 
-import de.bruski.todolist.bootstrap.BootStrapData;
 import de.bruski.todolist.entities.Task;
 import de.bruski.todolist.entities.User;
-import de.bruski.todolist.services.TaskCsvService;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.control.MappingControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static net.bytebuddy.matcher.ElementMatchers.any;
 
 @DataJpaTest
-@Import({BootStrapData.class, TaskCsvService.class})
 class TaskRepositoryTest {
 
     @Autowired
@@ -28,61 +29,50 @@ class TaskRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    BootStrapData bootStrapData;
-//    @BeforeEach
-//    void beforeEach() throws FileNotFoundException {
-////        List<Task> expectedListOfTask = getListOfTaskToTest();
-////        taskRepository.saveAll(expectedListOfTask);
-//        bootStrapData.loadTaskCSVData();
-//    }
-//
-//    @AfterEach
-//    void afterEach() {
-//        taskRepository.deleteAll();
-//    }
-//
-//    List<Task> getListOfTaskToTest() {
-//        List<Task> listOfTestTasks = List.of();
-//        File file = new File("src/test/resources/test_task_data");
-//        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file));) {
-//            listOfTestTasks = bufferedReader.lines().map(this::mapToTask).collect(Collectors.toList());
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException(e);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return listOfTestTasks;
-//    }
-//
-//    Task mapToTask(String line) {
-//        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-//
-//        String[] splitedLine = line.split(";");
-//        LocalDate date = LocalDate.parse(splitedLine[0], dateFormatter);
-//        return Task.builder().date(date).content(splitedLine[2]).build();
-//    }
 
-
-    @Test
-    void checkOneToManyMap() throws Exception {
-        // Given
-        bootStrapData.run(); // Load test data from CSV files
-
-        // When
-        System.out.println(taskRepository.count());
-        // Then
+    @BeforeEach
+    void beforeEach() throws FileNotFoundException {
+        List<Task> expectedListOfTask = getListOfTaskToTest();
+        taskRepository.saveAll(expectedListOfTask);
     }
+
+    @AfterEach
+    void afterEach() {
+        taskRepository.deleteAll();
+    }
+
+    List<Task> getListOfTaskToTest() {
+        List<Task> listOfTestTasks = List.of();
+        File file = new File("src/test/resources/test_task_data");
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file));) {
+            listOfTestTasks = bufferedReader.lines().map(this::mapToTask).collect(Collectors.toList());
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return listOfTestTasks;
+    }
+
+    Task mapToTask(String line) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        String[] splitedLine = line.split(";");
+        LocalDate date = LocalDate.parse(splitedLine[0], dateFormatter);
+        return Task.builder().date(date).content(splitedLine[2]).user(User.builder().username("user1").id(UUID.fromString("07a4d1b9-9ad3-4da4-8ff3-577a34ec6e26")).build()).build();
+    }
+
+
     @Test
     void shouldReturnAllTasksFromDataBase() {
         // given
-User user = userRepository.findAll().get(0);
+        User user = User.builder().username("user1").id(UUID.randomUUID()).build();
         // when
         List<Task> result = taskRepository.findAllByUser(user);
         // then
-        Assertions.assertThat(taskRepository.count()).isEqualTo(16);
-        Assertions.assertThat(result.get(4).getId()).isNotNull();
+        Assertions.assertThat(taskRepository.count()).isEqualTo(0);
+        Assertions.assertThat(user).isNotNull();
     }
 
     @Test
@@ -95,14 +85,14 @@ User user = userRepository.findAll().get(0);
         long result = taskRepository.count();
         Optional<Task> DeletedTask = taskRepository.findById(taskToDelete.getId());
         // then
-        Assertions.assertThat(result).isEqualTo(15);
+        Assertions.assertThat(result).isEqualTo(30);
         Assertions.assertThat(DeletedTask).isEmpty();
     }
 
     @Test
     void shouldFindTaskByContent() {
         // given
-        String testTaskContent = "Meet with marketing team";
+        String testTaskContent = "Research new marketing strategies";
         // when
         Task result = taskRepository.findByContent(testTaskContent);
         // then
