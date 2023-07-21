@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DemoTodolistApplication {
 
     public static void main(String[] args) {
-
         SpringApplication.run(DemoTodolistApplication.class, args);
     }
 

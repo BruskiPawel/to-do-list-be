@@ -2,87 +2,36 @@ package de.bruski.todolist.models;
 
 
 import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    @Column(name = "user_name")
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(name = "user_id", length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
+    private UUID id;
+    @Column(name = "username")
     private String username;
-    @Column(name = "email")
-    private String eMail;
-    @Column(name = "password")
+    @Column(name = "user_email")
+    private String email;
+    @Column(name = "user_password")
     private String password;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = ("user"), cascade = CascadeType.ALL)
-    private List<Task> taskList = new ArrayList<>();
-
-    public List<Task> getTaskList() {
-        return taskList;
-    }
-
-    public void setTaskList(List<Task> taskList) {
-        this.taskList = taskList;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String userName) {
-        this.username = userName;
-    }
-
-    public String geteMail() {
-        return eMail;
-    }
-
-    public void seteMail(String eMail) {
-        this.eMail = eMail;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        if (!Objects.equals(username, user.username)) return false;
-        if (!Objects.equals(eMail, user.eMail)) return false;
-        return Objects.equals(password, user.password);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = username != null ? username.hashCode() : 0;
-        result = 31 * result + (eMail != null ? eMail.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", userName='" + username + '\'' +
-                ", eMail='" + eMail + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Task> taskList;
 }
+
