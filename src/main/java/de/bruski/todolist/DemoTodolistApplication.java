@@ -10,3 +10,13 @@ public class DemoTodolistApplication {
     }
 
 }
+
+// TODO: 21.07.23
+        // * all the Endpoints with right returns
+        // * Services
+        // * logging logic
+                // * user logged in and logged out booleans
+                // * save user ID on logged in
+        // * Unit and integration tests
+        // * DTO refactor with mapper methods
+        // * password encryptor
