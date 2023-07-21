@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
@@ -16,6 +17,10 @@ public class TaskService {
     public Iterable<Task> getAllTasks() {
 
         return taskRepository.findAll();
+    }
+
+    public  List<Task> getAllTasksByUser(UUID id) {
+        return taskRepository.findAllByUserId(id);
     }
 
     public void createNewTask(Task task) {

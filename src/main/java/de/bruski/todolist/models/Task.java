@@ -17,6 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Task {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -31,7 +32,9 @@ public class Task {
     @Column(name = "task_content")
     private String content;
 
+    @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name ="user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
+
 }

@@ -2,14 +2,13 @@ package de.bruski.todolist.controllers;
 
 
 import de.bruski.todolist.models.Task;
-import de.bruski.todolist.repositories.TaskRepository;
 import de.bruski.todolist.services.TaskService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController()
 @CrossOrigin
@@ -21,12 +20,19 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @GetMapping("/tasks")
-    public ResponseEntity<?> getAllTask() throws Exception {
-        Iterable<Task> tasks = taskService.getAllTasks();
-        tasks.forEach(task -> System.out.println(task.getUser()));
+    @GetMapping("/tasks/{id}")
+    public ResponseEntity<?> getAllTaskByUser(@PathVariable UUID id) throws Exception {
+        List<Task> tasks = taskService.getAllTasksByUser(id);
+        System.out.println(tasks);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
+
+//    @GetMapping("/tasks")
+//    public ResponseEntity<?> getAllTask() throws Exception {
+//        Iterable<Task> tasks = taskService.getAllTasks();
+//        tasks.forEach(task -> System.out.println(task.getUser()));
+//        return new ResponseEntity<>(tasks, HttpStatus.OK);
+//    }
 
     @PostMapping("/add-new-task")
     public ResponseEntity<?> addNewTask(@RequestBody Task task) {

@@ -1,6 +1,7 @@
 package de.bruski.todolist.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -16,6 +17,7 @@ import java.util.*;
 @Builder
 @Getter
 @Setter
+@ToString
 public class User {
 
     @Id
@@ -31,7 +33,9 @@ public class User {
     @Column(name = "user_password")
     private String password;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Task> taskList;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Task> taskList = new ArrayList<>();
+
 }
 
