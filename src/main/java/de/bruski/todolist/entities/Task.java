@@ -1,4 +1,4 @@
-package de.bruski.todolist.models;
+package de.bruski.todolist.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

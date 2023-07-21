@@ -1,6 +1,6 @@
 package de.bruski.todolist.services;
 
-import de.bruski.todolist.models.User;
+import de.bruski.todolist.entities.User;
 import de.bruski.todolist.repositories.UserRepository;
 import de.bruski.todolist.webconfig.Encryptor;
 import org.springframework.beans.factory.annotation.Autowired;

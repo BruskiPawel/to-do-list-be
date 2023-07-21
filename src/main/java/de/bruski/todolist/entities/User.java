@@ -1,7 +1,7 @@
-package de.bruski.todolist.models;
+package de.bruski.todolist.entities;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.bruski.todolist.entities.Task;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;

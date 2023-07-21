@@ -1,26 +1,31 @@
 package de.bruski.todolist.services;
 
-import de.bruski.todolist.models.Task;
+import de.bruski.todolist.entities.Task;
+import de.bruski.todolist.mappers.TaskMapper;
+import de.bruski.todolist.models.TaskDTO;
 import de.bruski.todolist.repositories.TaskRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicLong;
 
+@RequiredArgsConstructor
 @Service
 public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
+
+    private final TaskMapper taskMapper;
 
     public Iterable<Task> getAllTasks() {
 
         return taskRepository.findAll();
     }
 
-    public  List<Task> getAllTasksByUser(UUID id) {
-        return taskRepository.findAllByUserId(id);
+    public  List<TaskDTO> getAllTasksByUser(UUID id) {
+        return taskMapper.taskListToTaskDtoList(taskRepository.findAllByUserId(id));
     }
 
     public void createNewTask(Task task) {

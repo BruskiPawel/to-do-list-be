@@ -1,7 +1,6 @@
 package de.bruski.todolist.controllers;
 
-import de.bruski.todolist.models.Task;
-import de.bruski.todolist.models.User;
+import de.bruski.todolist.entities.User;
 import de.bruski.todolist.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
