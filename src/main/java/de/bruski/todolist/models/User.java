@@ -34,7 +34,6 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
     private List<Task> taskList = new ArrayList<>();
 
 }

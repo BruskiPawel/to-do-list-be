@@ -1,5 +1,6 @@
 package de.bruski.todolist.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -34,6 +35,7 @@ public class Task {
 
     @ToString.Exclude
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
 
