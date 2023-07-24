@@ -29,17 +29,27 @@ public class UserService {
         System.out.println("saved");
     }
 
-    public ResponseEntity<?> loginUser(User user) throws NoSuchAlgorithmException {
-            User userDB = userRepository.findByUsername(user.getUsername());
-        if(userDB == null) {
-            System.out.println("Invalid username");
-            throw new IllegalArgumentException("Invalid username");
+    public String loginUser(User user) throws NoSuchAlgorithmException {
+//            User userDB = userRepository.findByUsername(user.getUsername());
+//        if(userDB == null) {
+//            System.out.println("Invalid username");
+//            throw new IllegalArgumentException("Invalid username");
+//        }
+//        if(userDB.getPassword().equals(encryptor.encryptString(user.getPassword()))){
+//            System.out.println("Logedin !");
+//        } else {
+//            throw new IllegalArgumentException("Invalid Password!");
+//        }
+//        return ResponseEntity.ok(true);
+        if(isValidCredentials(user.getUsername(), user.getPassword())) {
+            return "Logged in Success";
         }
-        if(userDB.getPassword().equals(encryptor.encryptString(user.getPassword()))){
-            System.out.println("Logedin !");
-        } else {
-            throw new IllegalArgumentException("Invalid Password!");
+        else {
+            return "failed";
         }
-        return ResponseEntity.ok(true);
+    }
+    private boolean isValidCredentials(String username, String password) throws NoSuchAlgorithmException {
+        String encryptedPassword = encryptor.encryptString(password);
+        return userRepository.existsUserByPassword(password) && userRepository.existsUserByUsername(username);
     }
 }

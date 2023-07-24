@@ -21,19 +21,12 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @GetMapping("/tasks/{id}")
-    public ResponseEntity<?> getAllTaskByUser(@PathVariable UUID id) throws Exception {
+    @GetMapping("/api/tasks")
+    public String getAllTaskByUser(@PathVariable UUID id) throws Exception {
         List<TaskDTO> tasks = taskService.getAllTasksByUser(id);
         System.out.println(tasks);
-        return new ResponseEntity<>(tasks, HttpStatus.OK);
+        return "tasks";
     }
-
-//    @GetMapping("/tasks")
-//    public ResponseEntity<?> getAllTask() throws Exception {
-//        Iterable<Task> tasks = taskService.getAllTasks();
-//        tasks.forEach(task -> System.out.println(task.getUser()));
-//        return new ResponseEntity<>(tasks, HttpStatus.OK);
-//    }
 
     @PostMapping("/add-new-task")
     public ResponseEntity<?> addNewTask(@RequestBody Task task) {
@@ -41,15 +34,9 @@ public class TaskController {
         return ResponseEntity.ok("Added");
     }
 
-    @PostMapping("/post_sorted_tasks")
-    public ResponseEntity<?> postSortedTasks(@RequestBody List<Task> tasks) {
-        taskService.addSortedTaskList(tasks);
-        return ResponseEntity.ok("Added");
-    }
-
     @DeleteMapping("/delete-task/{id}")
     public ResponseEntity<String> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
-        return new ResponseEntity<>("Deleted", HttpStatus.ACCEPTED);
+        return ResponseEntity.ok("deleted!");
     }
 }

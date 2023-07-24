@@ -18,5 +18,4 @@ public class DemoTodolistApplication {
                 // * user logged in and logged out booleans
                 // * save user ID on logged in
         // * Unit and integration tests
-        // * DTO refactor with mapper methods
         // * password encryptor
