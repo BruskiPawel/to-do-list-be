@@ -1,13 +1,14 @@
 package de.bruski.todolist.security;
 
-import de.bruski.todolist.webconfig.WebConfig;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -15,15 +16,32 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityCofing {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .cors(cors -> cors.disable())
-                .csrf(csrf -> csrf.disable())
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .requestMatchers("/login").permitAll()
-                .requestMatchers("/api/**").hasRole("USER")
+                .requestMatchers(HttpMethod.GET).permitAll()
                 .anyRequest().authenticated()
-                .and().build();
+                .and()
+                .httpBasic();
+
+        return http.build();
+    }
+
+    @Bean
+    public UserDetailsService users() {
+        UserDetails admin = User.builder()
+                .username("admin")
+                .password("password")
+                .roles("ADMIN")
+                .build();
+
+        UserDetails user = User.builder()
+                .username("user")
+                .password("password")
+                .roles("USER")
+                .build();
+
+        return new InMemoryUserDetailsManager(admin, user);
     }
 }
