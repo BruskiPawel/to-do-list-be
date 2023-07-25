@@ -4,7 +4,6 @@ import de.bruski.todolist.entities.User;
 import de.bruski.todolist.repositories.UserRepository;
 import de.bruski.todolist.webconfig.Encryptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
@@ -50,6 +49,6 @@ public class UserService {
     }
     private boolean isValidCredentials(String username, String password) throws NoSuchAlgorithmException {
         String encryptedPassword = encryptor.encryptString(password);
-        return userRepository.existsUserByPassword(password) && userRepository.existsUserByUsername(username);
+        return userRepository.existsByPassword(password) && userRepository.existsByUsername(username);
     }
 }

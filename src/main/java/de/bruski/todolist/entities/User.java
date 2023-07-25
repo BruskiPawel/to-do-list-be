@@ -1,18 +1,18 @@
 package de.bruski.todolist.entities;
 
 
-import de.bruski.todolist.entities.Task;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.*;
 
 @Entity
 @Table(name = "users")
-@NoArgsConstructor
+@RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
@@ -21,7 +21,7 @@ import java.util.*;
 public class User {
 
     @Id
-    @GeneratedValue(generator = "UUID")
+    @GeneratedValue(generator = "UUID", strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "user_id", length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
@@ -36,5 +36,10 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Task> taskList = new ArrayList<>();
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name =  "user_roles",
+            joinColumns = @JoinColumn(name = "userId", referencedColumnName = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "roleId", referencedColumnName = "id"))
+    private List<Role> roles = new ArrayList<>();
 }
 
