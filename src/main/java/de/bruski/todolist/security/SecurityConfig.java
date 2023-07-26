@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
-public class SecurityCofing {
+public class SecurityConfig {
 
     private final JWTAuthEntryPoint authEntryPoint;
 
@@ -41,23 +41,6 @@ public class SecurityCofing {
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
-//    @Bean
-//    public UserDetailsService users() {
-//        UserDetails admin = User.builder()
-//                .username("admin")
-//                .password("password")
-//                .roles("ADMIN")
-//                .build();
-//
-//        UserDetails user = User.builder()
-//                .username("user")
-//                .password("password")
-//                .roles("USER")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(admin, user);
-//    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
