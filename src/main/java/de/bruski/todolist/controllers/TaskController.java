@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController()
@@ -21,22 +22,29 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @GetMapping("/api/tasks")
-    public String getAllTaskByUser(@PathVariable UUID id) throws Exception {
+
+    @GetMapping("/api/tasks/{id}")
+    public ResponseEntity<List<TaskDTO>> getAllTaskByUser(@PathVariable UUID id) throws Exception {
         List<TaskDTO> tasks = taskService.getAllTasksByUser(id);
         System.out.println(tasks);
-        return "tasks";
+        return ResponseEntity.ok(tasks);
     }
+//@GetMapping("/api/tasks")
+//public String getAllTaskByUser(@PathVariable UUID id) throws Exception {
+//    List<Task> tasks = taskService.getAllTasksByUser(id);
+//    System.out.println(tasks);
+//    return "tasks";
+//}
 
     @PostMapping("/add-new-task")
-    public ResponseEntity<?> addNewTask(@RequestBody Task task) {
-        taskService.createNewTask(task);
-        return ResponseEntity.ok("Added");
+    public ResponseEntity<TaskDTO> addNewTask(@RequestBody TaskDTO task) {
+        TaskDTO savedTaskDto = taskService.createNewTask(task);
+        return ResponseEntity.ok(savedTaskDto);
     }
 
     @DeleteMapping("/delete-task/{id}")
-    public ResponseEntity<String> deleteTask(@PathVariable Long id) {
-        taskService.deleteTask(id);
-        return ResponseEntity.ok("deleted!");
+    public ResponseEntity<TaskDTO> deleteTask(@PathVariable UUID id) {
+        Optional<TaskDTO> deletedTask = taskService.deleteTask(id);
+        return ResponseEntity.ok(deletedTask.get());
     }
 }

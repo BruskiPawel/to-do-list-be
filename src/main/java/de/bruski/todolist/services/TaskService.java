@@ -9,13 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
 public class TaskService {
-    @Autowired
-    private TaskRepository taskRepository;
+
+    private final TaskRepository taskRepository;
 
     private final TaskMapper taskMapper;
 
@@ -25,19 +26,23 @@ public class TaskService {
     }
 
     public  List<TaskDTO> getAllTasksByUser(UUID id) {
-        return taskMapper.taskListToTaskDtoList(taskRepository.findAllByUserId(id));
+        List<Task> allByUserId = taskRepository.findAllByUserId(id);
+        return taskMapper.taskListToTaskDtoList(allByUserId);
+    }
+//    public  List<Task> getAllTasksByUser(UUID id) {
+//        return taskRepository.findAllByUserId(id);
+//    }
+    public TaskDTO createNewTask(TaskDTO task) {
+        return taskMapper.taskToTaskDto(taskRepository.save(taskMapper.taskDtoToTask(task)));
     }
 
-    public void createNewTask(Task task) {
-        taskRepository.save(task);
-    }
-
-    public void deleteTask(Long id) {
-        taskRepository.deleteById(id);
-    }
-
-    public void addSortedTaskList(Iterable<Task> tasks) {
-        taskRepository.deleteAll();
-        taskRepository.saveAll(tasks);
-    }
+    public Optional<TaskDTO> deleteTask(UUID id) {
+            Optional<Task> task = taskRepository.findById(id);
+            task.ifPresent(taskRepository::delete);
+            return Optional.of(taskMapper.taskToTaskDto(task.get()));
+        }
+//    public void addSortedTaskList(Iterable<Task> tasks) {
+//        taskRepository.deleteAll();
+//        taskRepository.saveAll(tasks);
+//    }
 }
