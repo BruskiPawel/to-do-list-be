@@ -64,7 +64,7 @@ class TaskServiceTest {
 
         Assertions.assertThat(savedTask).isNotNull();
         Assertions.assertThat(savedTask.getId()).isEqualTo(id);
-        Assertions.assertThat(taskRepository.findAllByUserId(task.getUser().getId())).isNotNull();
+        Assertions.assertThat(taskRepository.getTasksByUser(task.getUser())).isNotNull();
     }
 
 
@@ -102,11 +102,11 @@ class TaskServiceTest {
                         .build()
         );
 
-        when(taskRepository.findAllByUserId(userId)).thenReturn(listOfTasks);
+        when(taskRepository.getTasksByUser(listOfTasks.get(0).getUser())).thenReturn(listOfTasks);
 
         when(taskMapper.taskListToTaskDtoList(listOfTasks)).thenReturn(listOfTaskDtos);
 
-        List<TaskDTO> allTasks = taskService.getAllTasksByUser(userId);
+        List<TaskDTO> allTasks = taskService.getAllTasksByUser(listOfTasks.get(0).getUser());
 
         Assertions.assertThat(allTasks).isNotNull().hasSize(2);
     }
@@ -131,7 +131,7 @@ class TaskServiceTest {
                 .id(task.getId())
                 .build();
 
-        when(taskRepository.findById(taskId)).thenReturn(Optional.of(task));
+        when(taskRepository.getTaskById(taskId)).thenReturn(Optional.of(task));
 
         when(taskMapper.taskToTaskDto(task)).thenReturn(taskDto);
 

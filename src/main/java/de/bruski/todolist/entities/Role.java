@@ -1,11 +1,13 @@
 package de.bruski.todolist.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "roles")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Setter
 @Getter
 public class Role {
@@ -14,6 +16,4 @@ public class Role {
     private int id;
 
     private String name;
-
-
 }

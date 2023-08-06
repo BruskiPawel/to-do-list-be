@@ -1,6 +1,7 @@
 package de.bruski.todolist.services;
 
 import de.bruski.todolist.entities.Task;
+import de.bruski.todolist.entities.User;
 import de.bruski.todolist.mappers.TaskMapper;
 import de.bruski.todolist.models.TaskDTO;
 import de.bruski.todolist.repositories.TaskRepository;
@@ -25,8 +26,8 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
-    public  List<TaskDTO> getAllTasksByUser(UUID id) {
-        List<Task> allByUserId = taskRepository.findAllByUserId(id);
+    public  List<TaskDTO> getAllTasksByUser(User user) {
+        List<Task> allByUserId = taskRepository.getTasksByUser(user);
         return taskMapper.taskListToTaskDtoList(allByUserId);
     }
 //    public  List<Task> getAllTasksByUser(UUID id) {
@@ -37,7 +38,7 @@ public class TaskService {
     }
 
     public Optional<TaskDTO> deleteTask(UUID id) {
-            Optional<Task> task = taskRepository.findById(id);
+            Optional<Task> task = taskRepository.getTaskById(id);
             task.ifPresent(taskRepository::delete);
             return Optional.of(taskMapper.taskToTaskDto(task.get()));
         }

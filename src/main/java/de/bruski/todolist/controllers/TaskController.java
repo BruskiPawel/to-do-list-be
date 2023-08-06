@@ -2,6 +2,7 @@ package de.bruski.todolist.controllers;
 
 
 import de.bruski.todolist.entities.Task;
+import de.bruski.todolist.entities.User;
 import de.bruski.todolist.models.TaskDTO;
 import de.bruski.todolist.services.TaskService;
 import org.springframework.http.HttpStatus;
@@ -24,8 +25,8 @@ public class TaskController {
 
 
     @GetMapping("/api/tasks/{id}")
-    public ResponseEntity<List<TaskDTO>> getAllTaskByUser(@PathVariable UUID id) throws Exception {
-        List<TaskDTO> tasks = taskService.getAllTasksByUser(id);
+    public ResponseEntity<List<TaskDTO>> getAllTaskByUser(@PathVariable User user) throws Exception {
+        List<TaskDTO> tasks = taskService.getAllTasksByUser(user);
         System.out.println(tasks);
         return ResponseEntity.ok(tasks);
     }
