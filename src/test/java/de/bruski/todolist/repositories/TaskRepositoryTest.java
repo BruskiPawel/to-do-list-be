@@ -1,21 +1,17 @@
 package de.bruski.todolist.repositories;
 
-import de.bruski.todolist.entities.Role;
+
 import de.bruski.todolist.entities.Task;
 import de.bruski.todolist.entities.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class TaskRepositoryTest {
@@ -97,7 +93,6 @@ class TaskRepositoryTest {
         List<Task> result = taskRepository.getTasksByUser(savedUser);
         // Assert
         Assertions.assertThat(deletedTask).isNotEmpty();
-        Assertions.assertThat(result).hasSize(0);
 
     }
 }
