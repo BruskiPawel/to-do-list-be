@@ -1,10 +1,12 @@
 package de.bruski.todolist.controllers;
 
-
-import de.bruski.todolist.entities.Task;
 import de.bruski.todolist.entities.User;
 import de.bruski.todolist.models.TaskDTO;
+import de.bruski.todolist.models.UserDTO;
+import de.bruski.todolist.security.JWTAuthenticationFilter;
+import de.bruski.todolist.security.JWTTokenProvider;
 import de.bruski.todolist.services.TaskService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController()
+@RequestMapping("/api/task")
 @CrossOrigin
 public class TaskController {
 
@@ -23,29 +26,21 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-
-    @GetMapping("/api/tasks/{id}")
-    public ResponseEntity<List<TaskDTO>> getAllTaskByUser(@PathVariable User user) throws Exception {
+    @GetMapping("/tasks")
+    public ResponseEntity<List<TaskDTO>> getAllTaskByUser(@RequestBody UserDTO user) throws Exception {
         List<TaskDTO> tasks = taskService.getAllTasksByUser(user);
-        System.out.println(tasks);
-        return ResponseEntity.ok(tasks);
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
-//@GetMapping("/api/tasks")
-//public String getAllTaskByUser(@PathVariable UUID id) throws Exception {
-//    List<Task> tasks = taskService.getAllTasksByUser(id);
-//    System.out.println(tasks);
-//    return "tasks";
-//}
 
-    @PostMapping("/add-new-task")
+    @PostMapping("/create")
     public ResponseEntity<TaskDTO> addNewTask(@RequestBody TaskDTO task) {
         TaskDTO savedTaskDto = taskService.createNewTask(task);
-        return ResponseEntity.ok(savedTaskDto);
+        return new ResponseEntity<>(savedTaskDto, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete-task/{id}")
-    public ResponseEntity<TaskDTO> deleteTask(@PathVariable UUID id) {
-        Optional<TaskDTO> deletedTask = taskService.deleteTask(id);
-        return ResponseEntity.ok(deletedTask.get());
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<TaskDTO> deleteTask(@PathVariable UUID id, @RequestBody UserDTO userDto) {
+        taskService.deleteTask(userDto, id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

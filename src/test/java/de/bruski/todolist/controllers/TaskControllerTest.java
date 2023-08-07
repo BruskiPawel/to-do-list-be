@@ -80,7 +80,7 @@ class TaskControllerTest {
 
         given(taskService.getAllTasksByUser(ArgumentMatchers.any())).willReturn(listOfTaskDtos);
 
-        ResultActions response = mockMvc.perform(get("/api/tasks/{id}".toString(), UUID.randomUUID())
+        ResultActions response = mockMvc.perform(get("/api/tasks/tasks")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(listOfTaskDtos)));
     }
@@ -106,12 +106,12 @@ class TaskControllerTest {
 
         given(taskService.createNewTask(ArgumentMatchers.any())).willReturn(taskDto);
 
-        ResultActions response = mockMvc.perform(post("/add-new-task")
+        ResultActions response = mockMvc.perform(post("/api/task/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(taskDto))
         );
 
-        response.andExpect(MockMvcResultMatchers.status().isOk());
+        response.andExpect(MockMvcResultMatchers.status().isCreated());
     }
 
     @Test
@@ -132,9 +132,9 @@ class TaskControllerTest {
                 .id(task.getId())
                 .build();
 
-        given(taskService.deleteTask(ArgumentMatchers.any())).willReturn(Optional.of(taskDto));
+        given(taskService.deleteTask(ArgumentMatchers.any(), ArgumentMatchers.any())).willReturn(taskDto);
 
-        ResultActions resonse = mockMvc.perform(delete("/delete-task/{id}", UUID.randomUUID())
+        ResultActions resonse = mockMvc.perform(delete("/api/task/delete/{id}", UUID.randomUUID())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(taskDto)));
     }

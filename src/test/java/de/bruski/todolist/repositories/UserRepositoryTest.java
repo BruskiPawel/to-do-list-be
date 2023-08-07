@@ -13,6 +13,7 @@ import org.springframework.test.context.jdbc.Sql;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,11 +41,11 @@ class UserRepositoryTest {
                 .build();
 
         User savedUser = userRepository.save(user);
-        User result = userRepository.findByUsername(savedUser.getUsername());
+        Optional<User> result = userRepository.findByUsername(savedUser.getUsername());
 
-        Assertions.assertThat(result.getId()).isNotNull();
-        Assertions.assertThat(result.getUsername()).isEqualTo("testuser");
-        Assertions.assertThat(result.getRoles()).hasSize(2);
+        Assertions.assertThat(result.isPresent());
+        Assertions.assertThat(result.get().getUsername()).isEqualTo("testuser");
+        Assertions.assertThat(result.get().getRoles()).hasSize(2);
     }
 
     @Test
